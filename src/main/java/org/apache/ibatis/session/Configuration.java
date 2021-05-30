@@ -664,20 +664,33 @@ public class Configuration {
     return newExecutor(transaction, defaultExecutorType);
   }
 
+  /**
+   * 创建一个sql执行器.
+   *
+   * @param transaction  事务实例
+   * @param executorType 执行器类型
+   * @return 执行器实例
+   */
   public Executor newExecutor(Transaction transaction, ExecutorType executorType) {
+    //未配置则为SIMPLE执行器
     executorType = executorType == null ? defaultExecutorType : executorType;
     executorType = executorType == null ? ExecutorType.SIMPLE : executorType;
     Executor executor;
     if (ExecutorType.BATCH == executorType) {
+      //BATCH执行器
       executor = new BatchExecutor(this, transaction);
     } else if (ExecutorType.REUSE == executorType) {
+      //REUSE执行器
       executor = new ReuseExecutor(this, transaction);
     } else {
+      //SIMPLE执行器
       executor = new SimpleExecutor(this, transaction);
     }
     if (cacheEnabled) {
+      //如果配置了开启缓存,则将当前执行器实例委托到缓存执行器,前置一层缓存逻辑
       executor = new CachingExecutor(executor);
     }
+    //为执行器安装mybatis插件
     executor = (Executor) interceptorChain.pluginAll(executor);
     return executor;
   }

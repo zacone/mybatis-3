@@ -44,6 +44,14 @@ public class SqlSessionFactoryBuilder {
     return build(reader, null, properties);
   }
 
+  /**
+   * 通过reader构建SqlSessionFactory实例.
+   *
+   * @param reader      reader
+   * @param environment 环境
+   * @param properties  mybatis动态配置
+   * @return SqlSessionFactory实例
+   */
   public SqlSessionFactory build(Reader reader, String environment, Properties properties) {
     try {
       XMLConfigBuilder parser = new XMLConfigBuilder(reader, environment, properties);
@@ -72,6 +80,14 @@ public class SqlSessionFactoryBuilder {
     return build(inputStream, null, properties);
   }
 
+  /**
+   * 通过stream构建SqlSessionFactory实例.
+   *
+   * @param inputStream stream
+   * @param environment 环境
+   * @param properties  mybatis动态配置
+   * @return SqlSessionFactory实例
+   */
   public SqlSessionFactory build(InputStream inputStream, String environment, Properties properties) {
     try {
       XMLConfigBuilder parser = new XMLConfigBuilder(inputStream, environment, properties);
@@ -88,6 +104,12 @@ public class SqlSessionFactoryBuilder {
     }
   }
 
+  /**
+   * 通过configuration类实例初始化DefaultSqlSessionFactory(SqlSessionFactory的实现类).
+   *
+   * @param config mybatis核心配置实例
+   * @return SqlSessionFactory
+   */
   public SqlSessionFactory build(Configuration config) {
     return new DefaultSqlSessionFactory(config);
   }
